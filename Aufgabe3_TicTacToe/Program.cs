@@ -44,13 +44,17 @@
     }
 }
 
+static bool IsInBounds(int[,] board,int newY,int newX)
+{
+    bool isInBounds = (newY >= 0 && newY < board.GetLength(0)) &&  //Hilfsvariable um festzustellen ob man den Index out of Range fährt 
+                      (newX >= 0 && newX < board.GetLength(1));
+    return isInBounds;
+}
 static bool IsWinner(int[,]board,int lastmovYpos,int lastmovXpos)
 {
     int searchfor = board[lastmovYpos,lastmovXpos]; //suche nach einer Reihe von dem typ des letzten Spielzugs
     int newY = lastmovYpos;
     int newX = lastmovXpos;
-    bool isInBounds = newY >= 0 && newY < board.GetLength(0) &&  //Hilfsvariable um festzustellen ob man den Index out of Range fährt 
-                      newX >= 0 && newX < board.GetLength(1);
     
     for(int i = -1; i<=1;i++)
     {                             
@@ -58,7 +62,7 @@ static bool IsWinner(int[,]board,int lastmovYpos,int lastmovXpos)
         for(int j = -1; j<=1;j++)   
         {                           
             newX = lastmovXpos + j; 
-            if(isInBounds&&!(j==0&i==0))
+            if(IsInBounds(board,newY,newX)&&(!(j==0&i==0)))
             {
                 if(searchfor == board[newY,newX])
                 {
@@ -66,7 +70,7 @@ static bool IsWinner(int[,]board,int lastmovYpos,int lastmovXpos)
                     {
                         newX = lastmovXpos + k*j;
                         newY = lastmovYpos + k*i;
-                        if(isInBounds)
+                        if(IsInBounds(board,newY,newX))
                         {
                             if(searchfor == board[newY,newX])
                             {
@@ -107,7 +111,7 @@ static void GetYX(string input, out int y, out int x)
             else if (!xWasWritten)
             {
                 // Erste gefundene Zahl: Speichere direkt im X-Wert
-                x = input[i];
+                x = input[i]-49;
                 lastCharWasNumber = true;
                 xWasWritten = true;
             }
@@ -139,19 +143,31 @@ static void GetYX(string input, out int y, out int x)
     }
 }
 
-Console.Write("Wie groß soll eine Spielbrettseite sein?: ");
-int boardsize = Convert.ToInt32(Console.ReadLine());
-int[,] board = new int[boardsize,boardsize];
-int spieler = 2;
+Console.Write("Wie viele Spalten soll das Spielbrett haben?: ");
+int spalten = Convert.ToInt32(Console.ReadLine());
+Console.Write("Wie viele Zeilen soll das Spielbrett haben?: ");
+int zeilen = Convert.ToInt32(Console.ReadLine());
+
+int[,] board = new int[zeilen,spalten];
+int spieler = 2,movX,movY;
 do
 {
 if(spieler == 1)
     spieler = 2;
 else
     spieler = 1;
+Console.Clear();
 System.Console.WriteLine($"Spieler {spieler} du bist dran!");
 DrawBoard(board);
+do
+{
 System.Console.Write("Gebe die Koordinaten deines nächsten Zuges ein!:");
-
-
-} while (!isWinner(board,movY,movX));
+GetYX(Console.ReadLine()!,out movY,out movX);
+}while(!IsInBounds(board,movY,movX));
+board[movY,movX]=spieler;
+} while (!IsWinner(board,movY,movX));
+Console.Clear();
+DrawBoard(board);
+Console.WriteLine($"Spieler {spieler} hat gewonnen!");
+System.Console.WriteLine("Drücken sie eine beliebige Taste um zu schließen.");
+Console.ReadLine();

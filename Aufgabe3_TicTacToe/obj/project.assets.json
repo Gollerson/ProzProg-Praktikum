@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\miron\\C#Projects\\TicTacToe\\TicTacToe.csproj",
+      "projectUniqueName": "C:\\Users\\miron\\C#Projects\\ProzProg_Praktikum\\Aufgabe3_TicTacToe\\TicTacToe.csproj",
       "projectName": "TicTacToe",
-      "projectPath": "C:\\Users\\miron\\C#Projects\\TicTacToe\\TicTacToe.csproj",
+      "projectPath": "C:\\Users\\miron\\C#Projects\\ProzProg_Praktikum\\Aufgabe3_TicTacToe\\TicTacToe.csproj",
       "packagesPath": "C:\\Users\\miron\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\miron\\C#Projects\\TicTacToe\\obj\\",
+      "outputPath": "C:\\Users\\miron\\C#Projects\\ProzProg_Praktikum\\Aufgabe3_TicTacToe\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\miron\\AppData\\Roaming\\NuGet\\NuGet.Config"

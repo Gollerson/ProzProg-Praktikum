@@ -58,7 +58,7 @@ static bool IsWinner(int[,]board,int lastmovYpos,int lastmovXpos)
         for(int j = -1; j<=1;j++)   
         {                           
             newX = lastmovXpos + j; 
-            if(isInBounds)
+            if(isInBounds&&!(j==0&i==0))
             {
                 if(searchfor == board[newY,newX])
                 {
@@ -82,71 +82,63 @@ static bool IsWinner(int[,]board,int lastmovYpos,int lastmovXpos)
     }
     return false; //alle Möglichkeiten wurden erschöpft ohne dass eine Reihe gefunden wurde
 }
-// Funktion nimmt einen String als Input und gibt ein Array mit Y,X Koordinaten zurück
-static int[] GetYX(string input)
+// Funktion "GetYX" nimmt einen String als Input und gibt ein Array mit Y,X Koordinaten zurück
+static void GetYX(string input, out int y, out int x)
 {
-    // Array für Y und X Position, Index 0 = Y, Index 1 = X
-    int[] YXPos = new int[2];
-    
-    bool lastcharwasnumber = false;  // War das letzte Zeichen eine Zahl?
-    bool ywasWritten = false;        // Wurde bereits ein Y-Wert (Buchstabe) gefunden?
-    bool xwasWritten = false;        // Wurde bereits ein X-Wert (Zahl) gefunden?
+    // Initialisiere Y und X als Ausgabewerte
+    y = -1; // Standardwert, wenn kein Buchstabe gefunden wird
+    x = 0;  // Standardwert, wenn keine Zahl gefunden wird
+
+    bool lastCharWasNumber = false;  // War das letzte Zeichen eine Zahl?
+    bool yWasWritten = false;        // Wurde bereits ein Y-Wert gefunden?
+    bool xWasWritten = false;        // Wurde bereits ein X-Wert gefunden?
 
     // Schleife durch Input-String
-    for(int i = 0; i < input.Length; i++)
+    for (int i = 0; i < input.Length; i++)
     {
-        // Prüfe ob aktuelles Zeichen eine Zahl ist (ASCII und UTF-8 48-57 sind Zahlen 0-9)
-        if((int)input[i] >= 48 && (int)input[i] <= 57)
+        // Prüfe, ob aktuelles Zeichen eine Zahl ist (ASCII 48-57 sind 0-9)
+        if ((int)input[i] >= 48 && (int)input[i] <= 57)
         {
-            if (lastcharwasnumber == true)
-                // Wenn vorheriges Zeichen auch eine Zahl war (nur bei erstem eintrag):
-                // Multipliziere bisherige Zahl mit 10 und addiere neue Ziffer
-                YXPos[1] = (YXPos[1] * 10) + (int)input[i];
-            else
+            if (lastCharWasNumber)
             {
-                if(!xwasWritten)
-                {
-                    // Erste gefundene Zahl: Speichere direkt im X-Wert
-                    YXPos[1] = (int)input[i];
-                    lastcharwasnumber = true;
-                    xwasWritten = true;
-                }
+                // Multipliziere bisherige Zahl mit 10 und addiere neue Ziffer
+                x = (x * 10) + (input[i] - '0');
+            }
+            else if (!xWasWritten)
+            {
+                // Erste gefundene Zahl: Speichere direkt im X-Wert
+                x = input[i];
+                lastCharWasNumber = true;
+                xWasWritten = true;
             }
         }
         else
         {
-            // Wenn kein Zahlenzeichen, setze Flag zurück
-            lastcharwasnumber = false;
+            lastCharWasNumber = false; // Kein Zahlenzeichen, setze Flag zurück
         }
 
-        // Prüfe ob aktuelles Zeichen ein Großbuchstabe ist (ASCII 65-90 sind A-Z)
-        if((int)input[i] >= 65 && (int)input[i] <= 90)
+        // Prüfe, ob aktuelles Zeichen ein Großbuchstabe ist (A-Z: ASCII 65-90)
+        if ((int)input[i] >= 65 && (int)input[i] <= 90)
         {
-            // Wenn noch kein Y-Wert gesetzt wurde:
-            // Konvertiere Buchstabe zu Zahl (A=0, B=1, etc.)
-            if(!ywasWritten)
+            if (!yWasWritten)
             {
-               YXPos[0] = (int)input[i] - 65;
-               ywasWritten = true;
+                y = input[i] - 65; // Konvertiere Buchstabe zu Zahl (A=0, B=1, etc.)
+                yWasWritten = true;
             }
         }
 
-        // Prüfe ob aktuelles Zeichen ein Kleinbuchstabe ist (ASCII 97-122 sind a-z)
-        if((int)input[i] >= 97 && (int)input[i] <= 122)
+        // Prüfe, ob aktuelles Zeichen ein Kleinbuchstabe ist (a-z: ASCII 97-122)
+        if ((int)input[i] >= 97 && (int)input[i] <= 122)
         {
-            // Wenn noch kein Y-Wert gesetzt wurde:
-            // Konvertiere Buchstabe zu Zahl (a=0, b=1, etc.)
-            if(!ywasWritten)
+            if (!yWasWritten)
             {
-               YXPos[0] = (int)input[i] - 97;
-               ywasWritten = true;
+                y = input[i] - 97; // Konvertiere Buchstabe zu Zahl (a=0, b=1, etc.)
+                yWasWritten = true;
             }
         }
     }
-
-    // Gebe das Array mit den gefundenen Koordinaten zurück
-    return YXPos;
 }
+
 Console.Write("Wie groß soll eine Spielbrettseite sein?: ");
 int boardsize = Convert.ToInt32(Console.ReadLine());
 int[,] board = new int[boardsize,boardsize];

@@ -74,8 +74,8 @@ static bool IsWinner(int[,]board,int lastmovYpos,int lastmovXpos)
                         {
                             if(searchfor == board[newY,newX])
                             {
-                                //(1.Schleifendurchlauf) das symbol ist mittig in einer dreier reihe
-                                //(2.Schleifendurchlauf) das symbol ist seitlich an einer dreier reihe
+                                //(1.Schleifendurchlauf) das Symbol ist mittig in einer dreier reihe
+                                //(2.Schleifendurchlauf) das Symbol ist seitlich an einer dreier reihe
                                 return true;
                             }
                         }
@@ -87,17 +87,16 @@ static bool IsWinner(int[,]board,int lastmovYpos,int lastmovXpos)
     return false; //alle Möglichkeiten wurden erschöpft ohne dass eine Reihe gefunden wurde
 }
 // Funktion "GetYX" nimmt einen String als Input und gibt ein Array mit Y,X Koordinaten zurück
-static void GetYX(string input, out int y, out int x)
+// Angepasste GetYX-Funktion
+static bool GetYX(string input, out int y, out int x, int maxRows, int maxCols)
 {
-    // Initialisiere Y und X als Ausgabewerte
-    y = -1; // Standardwert, wenn kein Buchstabe gefunden wird
-    x = 0;  // Standardwert, wenn keine Zahl gefunden wird
+    y = -1;
+    x = -1;
+    bool lastCharWasNumber = false;
+    bool yWasWritten = false;
+    bool xWasWritten = false;
 
-    bool lastCharWasNumber = false;  // War das letzte Zeichen eine Zahl?
-    bool yWasWritten = false;        // Wurde bereits ein Y-Wert gefunden?
-    bool xWasWritten = false;        // Wurde bereits ein X-Wert gefunden?
-
-    // Schleife durch Input-String
+    // Schleife durch die Eingabe
     for (int i = 0; i < input.Length; i++)
     {
         // Prüfe, ob aktuelles Zeichen eine Zahl ist (ASCII 48-57 sind 0-9)
@@ -105,20 +104,18 @@ static void GetYX(string input, out int y, out int x)
         {
             if (lastCharWasNumber)
             {
-                // Multipliziere bisherige Zahl mit 10 und addiere neue Ziffer
-                x = (x * 10) + (input[i] - '0');
+                x = (x * 10) + (input[i] - '0'); // Multipliziere vorherige Zahl mit 10 und addiere neue Ziffer
             }
             else if (!xWasWritten)
             {
-                // Erste gefundene Zahl: Speichere direkt im X-Wert
-                x = input[i]-49;
+                x = input[i] - 49; // Erste Zahl
                 lastCharWasNumber = true;
                 xWasWritten = true;
             }
         }
         else
         {
-            lastCharWasNumber = false; // Kein Zahlenzeichen, setze Flag zurück
+            lastCharWasNumber = false; // Kein Zahlenzeichen, Flag zurücksetzen
         }
 
         // Prüfe, ob aktuelles Zeichen ein Großbuchstabe ist (A-Z: ASCII 65-90)
@@ -141,6 +138,16 @@ static void GetYX(string input, out int y, out int x)
             }
         }
     }
+
+    // Prüfen, ob die Eingabe innerhalb des gültigen Bereichs liegt
+    if (y >= 0 && y < maxRows && x >= 0 && x < maxCols)
+    {
+        return true; // Gültige Eingabe
+    }
+    else
+    {
+        return false; // Ungültige Eingabe
+    }
 }
 
 Console.Write("Wie viele Spalten soll das Spielbrett haben?: ");
@@ -148,26 +155,42 @@ int spalten = Convert.ToInt32(Console.ReadLine());
 Console.Write("Wie viele Zeilen soll das Spielbrett haben?: ");
 int zeilen = Convert.ToInt32(Console.ReadLine());
 
-int[,] board = new int[zeilen,spalten];
+int[,] board = new int[zeilen, spalten];
 int spieler = 2,movX,movY;
 do
 {
-if(spieler == 1)
-    spieler = 2;
-else
-    spieler = 1;
-Console.Clear();
-System.Console.WriteLine($"Spieler {spieler} du bist dran!");
-DrawBoard(board);
-do
-{
-System.Console.Write("Gebe die Koordinaten deines nächsten Zuges ein!:");
-GetYX(Console.ReadLine()!,out movY,out movX);
-}while(!IsInBounds(board,movY,movX));
-board[movY,movX]=spieler;
-} while (!IsWinner(board,movY,movX));
+    if(spieler == 1)
+        spieler = 2;
+    else
+        spieler = 1;
+    
+    Console.Clear();
+    Console.WriteLine($"Spieler {spieler}, du bist dran!");
+    DrawBoard(board);
+
+    // Eingabe abfragen, bis eine gültige Eingabe erfolgt
+    bool validInput;
+    do
+    {
+        Console.Write("Gib die Koordinaten deines nächsten Zuges ein (z.B. A1): ");
+        string input = Console.ReadLine()!;
+        validInput = GetYX(input, out movY, out movX, zeilen, spalten);
+
+        if (!validInput || !IsInBounds(board, movY, movX) || board[movY, movX] != 0)
+        {
+            Console.WriteLine("Ungültige Eingabe! Bitte gib eine freie, gültige Position ein.");
+            validInput = false; // Flag zurücksetzen
+        }
+
+    } while (!validInput);
+
+    // Spielzug setzen
+    board[movY, movX] = spieler;
+
+} while (!IsWinner(board, movY, movX));
+
 Console.Clear();
 DrawBoard(board);
 Console.WriteLine($"Spieler {spieler} hat gewonnen!");
-System.Console.WriteLine("Drücken sie eine beliebige Taste um zu schließen.");
-Console.ReadLine();
+Console.WriteLine("Drücke eine beliebige Taste, um zu schließen.");
+

@@ -53,8 +53,8 @@ static bool IsInBounds(int[,] board,int newY,int newX)
 static bool IsWinner(int[,]board,int lastmovYpos,int lastmovXpos)
 {
     int searchfor = board[lastmovYpos,lastmovXpos]; //suche nach einer Reihe von dem typ des letzten Spielzugs
-    int newY = lastmovYpos;
-    int newX = lastmovXpos;
+    int newY;
+    int newX;
     
     for(int i = -1; i<=1;i++)
     {                             
@@ -143,31 +143,43 @@ static void GetYX(string input, out int y, out int x)
     }
 }
 
+// Spieler wählt die Anzahl der Spalten und Zeilen für das Spielfeld
 Console.Write("Wie viele Spalten soll das Spielbrett haben?: ");
 int spalten = Convert.ToInt32(Console.ReadLine());
 Console.Write("Wie viele Zeilen soll das Spielbrett haben?: ");
 int zeilen = Convert.ToInt32(Console.ReadLine());
 
-int[,] board = new int[zeilen,spalten];
-int spieler = 2,movX,movY;
+// Initialisierung des Spielfelds und Spielvariablen
+int[,] board = new int[zeilen, spalten];
+int spieler = 2, movX, movY; // `spieler` wechselt zwischen 1 und 2
+
+// Hauptspielschleife
 do
 {
-if(spieler == 1)
-    spieler = 2;
-else
-    spieler = 1;
-Console.Clear();
-System.Console.WriteLine($"Spieler {spieler} du bist dran!");
-DrawBoard(board);
-do
-{
-System.Console.Write("Gebe die Koordinaten deines nächsten Zuges ein!:");
-GetYX(Console.ReadLine()!,out movY,out movX);
-}while(!IsInBounds(board,movY,movX));
-board[movY,movX]=spieler;
-} while (!IsWinner(board,movY,movX));
+    // Wechsel des Spielers
+    spieler = (spieler == 1) ? 2 : 1;
+
+    Console.Clear(); // Konsole leeren für eine saubere Ansicht
+    Console.WriteLine($"Spieler {spieler} du bist dran!"); 
+
+    // Spielfeld anzeigen
+    DrawBoard(board);
+
+    // Spieler gibt die Koordinaten seines Zugs ein
+    do
+    {
+        Console.Write("Gebe die Koordinaten deines nächsten Zuges ein!: ");
+        GetYX(Console.ReadLine()!, out movY, out movX);
+    } while (!IsInBounds(board, movY, movX)); // Eingabe wiederholen, falls ungültig
+
+    // Spielfeld mit dem Zug des Spielers aktualisieren
+    board[movY, movX] = spieler;
+
+} while (!IsWinner(board, movY, movX)); // Schleife läuft weiter, bis ein Gewinner ermittelt ist
+
+// Spielende: Gewinner ausgeben
 Console.Clear();
 DrawBoard(board);
 Console.WriteLine($"Spieler {spieler} hat gewonnen!");
-System.Console.WriteLine("Drücken sie eine beliebige Taste um zu schließen.");
+Console.WriteLine("Drücken Sie eine beliebige Taste, um zu schließen.");
 Console.ReadLine();

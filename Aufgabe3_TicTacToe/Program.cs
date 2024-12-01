@@ -150,6 +150,7 @@ static bool GetYX(string input, out int y, out int x, int maxRows, int maxCols)
     }
 }
 
+//Erfrage Brett-Dimensionen und Initialisiere Variablen 
 Console.Write("Wie viele Spalten soll das Spielbrett haben?: ");
 int spalten = Convert.ToInt32(Console.ReadLine());
 Console.Write("Wie viele Zeilen soll das Spielbrett haben?: ");
@@ -157,8 +158,11 @@ int zeilen = Convert.ToInt32(Console.ReadLine());
 
 int[,] board = new int[zeilen, spalten];
 int spieler = 2,movX,movY;
+
+//Hauptschleife des Spiels jeder Schleifendurchlauf symbolisiert einen Zug
 do
 {
+    //Der Spieler wechselt zu Beginn jedes Zuges
     if(spieler == 1)
         spieler = 2;
     else
@@ -174,8 +178,9 @@ do
     {
         Console.Write("Gib die Koordinaten deines nächsten Zuges ein (z.B. A1): ");
         string input = Console.ReadLine()!;
-        validInput = GetYX(input, out movY, out movX, zeilen, spalten);
+        validInput = GetYX(input, out movY, out movX, zeilen, spalten); //Lese aus dem Input die Koordinaten
 
+        //Checke ob die Koordinaten i.O sind
         if (!validInput || !IsInBounds(board, movY, movX) || board[movY, movX] != 0)
         {
             Console.WriteLine("Ungültige Eingabe! Bitte gib eine freie, gültige Position ein.");
@@ -187,9 +192,11 @@ do
     // Spielzug setzen
     board[movY, movX] = spieler;
 
-} while (!IsWinner(board, movY, movX));
-
+} while (!IsWinner(board, movY, movX)); //Wiederhole falls nicht gewonnen wurde
+// Spieler X hat gewonnen, Gebe das Aus
+Console.ForegroundColor = ConsoleColor.Green;
 Console.Clear();
 DrawBoard(board);
 Console.WriteLine($"Spieler {spieler} hat gewonnen!");
 Console.WriteLine("Drücke eine beliebige Taste, um zu schließen.");
+Console.ReadKey();

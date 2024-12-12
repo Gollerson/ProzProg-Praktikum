@@ -1,0 +1,15 @@
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\bin\Debug\net8.0\TextAnalyse.exe
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\bin\Debug\net8.0\TextAnalyse.deps.json
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\bin\Debug\net8.0\TextAnalyse.runtimeconfig.json
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\bin\Debug\net8.0\TextAnalyse.dll
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\bin\Debug\net8.0\TextAnalyse.pdb
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\TextAnalyse.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\TextAnalyse.AssemblyInfoInputs.cache
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\TextAnalyse.AssemblyInfo.cs
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\TextAnalyse.csproj.CoreCompileInputs.cache
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\TextAnalyse.sourcelink.json
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\TextAnalyse.dll
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\refint\TextAnalyse.dll
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\TextAnalyse.pdb
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\TextAnalyse.genruntimeconfig.cache
+C:\Users\miron\C#Projects\ProzProg_Praktikum\Aufgabe4_TextAnalyse\TextAnalyse\obj\Debug\net8.0\ref\TextAnalyse.dll
